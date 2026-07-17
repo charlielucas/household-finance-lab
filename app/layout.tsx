@@ -1,36 +1,37 @@
 import type { Metadata } from "next";
-import { headers } from "next/headers";
 import "./globals.css";
 
 const title = "Weekmark Household Lab";
 const description = "A clean-room household finance dashboard built with deterministic fictional data.";
+const canonicalOrigin = "https://weekmark-household-lab.charlielucas95.chatgpt.site";
 
-export async function generateMetadata(): Promise<Metadata> {
-  const requestHeaders = await headers();
-  const host = (requestHeaders.get("x-forwarded-host") ?? requestHeaders.get("host"))
-    ?.split(",")[0]
-    .trim();
-  const forwardedProtocol = requestHeaders.get("x-forwarded-proto")?.split(",")[0].trim();
-  const protocol = forwardedProtocol === "http" || host?.startsWith("localhost") ? "http" : "https";
-  const imageUrl = host ? `${protocol}://${host}/og.png` : undefined;
-
-  return {
+export const metadata: Metadata = {
+  metadataBase: new URL(canonicalOrigin),
+  title,
+  description,
+  alternates: {
+    canonical: "/",
+  },
+  openGraph: {
+    description,
+    images: [{
+      url: "/og.png",
+      width: 1200,
+      height: 630,
+      alt: "Weekmark household planning dashboard",
+    }],
+    siteName: title,
+    title,
+    type: "website",
+    url: "/",
+  },
+  twitter: {
+    card: "summary_large_image",
     title,
     description,
-    openGraph: {
-      title,
-      description,
-      type: "website",
-      ...(imageUrl ? { images: [{ url: imageUrl, width: 1200, height: 630, alt: "Weekmark household planning dashboard" }] } : {}),
-    },
-    twitter: {
-      card: "summary_large_image",
-      title,
-      description,
-      ...(imageUrl ? { images: [imageUrl] } : {}),
-    },
-  };
-}
+    images: ["/og.png"],
+  },
+};
 
 export default function RootLayout({
   children,

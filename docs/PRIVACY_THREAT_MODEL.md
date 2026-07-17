@@ -32,7 +32,7 @@ The API boundary accepts only the documented scenario fields. The seed and model
 | Copying private data into the public demo | Disclosure of personal financial information | Clean-room folder, unique schema and brand, fictional seed, restricted-identifier tests |
 | Secret or token committed later | Connector or account compromise | No connector code or environment keys; CI/source scans can be extended before any integration |
 | Sensitive browser persistence | Values remain on a shared device | No localStorage, cookies, database, or analytics; acknowledgements are memory-only |
-| Input abuse | Runtime errors or extreme calculations | Object check, finite-number check, enum validation, and field clamping |
+| Input abuse | Runtime errors, resource exhaustion, or extreme calculations | JSON media-type gate, 4 KB streamed-body ceiling, non-array object check, finite-number check, enum validation, and field clamping |
 | Cached scenario responses | Assumptions exposed through intermediaries | API returns `Cache-Control: no-store` |
 | False confidence in model output | Harmful financial decision | Fictional-data banner, provenance labels, confidence states, formula docs, and advice disclaimers |
 | Re-identification through labels | Generic demo linked to a real household | Generic household, account, obligation, employer-free, and institution-free vocabulary |

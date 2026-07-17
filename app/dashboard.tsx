@@ -474,9 +474,12 @@ export default function Dashboard({ initialBundle }: { initialBundle: DashboardB
                 {ledger.obligations.map((item) => (
                   <li key={item.id}>
                     <time dateTime={`2026-01-${String(item.dayOfMonth).padStart(2, "0")}`}>{String(item.dayOfMonth).padStart(2, "0")}</time>
-                    <div><span>{item.label}</span><small>{item.category} · {item.essential ? "essential" : "reviewable"}</small></div>
+                    <div>
+                      <span>{item.label}</span>
+                      <small>{item.category} · {item.essential ? "essential" : "reviewable"}</small>
+                      <span className={`obligation-confidence ${item.confidence}`}>{confidenceLabel(item.confidence)} confidence</span>
+                    </div>
                     <b>{dollars.format(item.monthlyAmount)}</b>
-                    <i className={`confidence-dot ${item.confidence}`} title={`${confidenceLabel(item.confidence)} confidence`} />
                   </li>
                 ))}
               </ol>

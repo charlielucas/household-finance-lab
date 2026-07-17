@@ -16,8 +16,13 @@ test("renders the complete household overview instead of the starter", async () 
   assert.match(dashboard, /Income \+ tax waterfall/);
   assert.match(dashboard, /Financing quality gate/);
   assert.match(dashboard, /Fixed-cost calendar/);
+  assert.match(dashboard, /\{confidenceLabel\(item\.confidence\)\} confidence/);
+  assert.doesNotMatch(dashboard, /confidence-dot|title=\{`\$\{confidenceLabel\(item\.confidence\)\} confidence`\}/);
   assert.match(dashboard, /Provenance \+ confidence/);
   assert.match(layout, /Weekmark Household Lab/);
+  assert.match(layout, /metadataBase: new URL\(canonicalOrigin\)/);
+  assert.match(layout, /weekmark-household-lab\.charlielucas95\.chatgpt\.site/);
+  assert.doesNotMatch(layout, /next\/headers|x-forwarded-host|x-forwarded-proto/);
   assert.doesNotMatch(`${page}${dashboard}${layout}`, /SkeletonPreview|codex-preview|Starter Project/);
 });
 
@@ -26,7 +31,10 @@ test("scenario API recalculates through the shared model and disables caching", 
   assert.match(route, /createDashboardBundle/);
   assert.match(route, /Cache-Control/);
   assert.match(route, /no-store/);
-  assert.match(route, /status: 400/);
+  assert.match(route, /\b400\b/);
+  assert.match(route, /\b413\b/);
+  assert.match(route, /\b415\b/);
+  assert.match(route, /Array\.isArray/);
 });
 
 test("portfolio README leads with the public demo, boundaries, and supporting evidence", async () => {

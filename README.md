@@ -36,6 +36,7 @@ npm run lint
 npm run typecheck
 npm test
 npm run build
+npm audit --audit-level=high
 ```
 
 ## Feature tour
@@ -137,7 +138,7 @@ The test suite covers:
 - privacy-key and private-identifier scans;
 - required product surfaces, docs, and API headers.
 
-CI is defined in `.github/workflows/ci.yml` and runs install, lint, typecheck, tests, and production build on pushes and pull requests.
+CI is defined in `.github/workflows/ci.yml` and runs install, a high-severity dependency audit, lint, typecheck, tests, and production build on pushes and pull requests. Dependabot checks npm and GitHub Actions dependencies weekly; moderate advisories remain visible for review without blocking safe updates.
 
 Accessibility work includes semantic landmarks, a skip link, visible focus, minimum touch targets, explicit range labels and value text, chart point buttons, data-table alternatives, a single concise live region for scenario results, reduced-motion support, responsive reflow, and a print mode. See [Accessibility](docs/ACCESSIBILITY.md) for the manual QA checklist and known verification gaps.
 

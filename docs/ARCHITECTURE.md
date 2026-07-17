@@ -20,7 +20,7 @@ flowchart TD
 - `lib/seed.ts` creates the complete fictional ledger from one constant seed.
 - `lib/model.ts` contains normalization, amortization, runway, exception, waterfall, and quote-gate calculations. It is pure and has no I/O.
 - `app/page.tsx` produces the initial server-rendered bundle.
-- `app/api/scenario/route.ts` accepts a scenario object, bounds every field, recalculates through the shared model, and returns a no-store response.
+- `app/api/scenario/route.ts` accepts a small JSON scenario object, rejects invalid media types and oversized bodies before parsing, bounds every field, recalculates through the shared model, and returns a no-store response.
 - `app/dashboard.tsx` owns transient interaction state only.
 - `app/globals.css` provides the visual system, responsive rules, focus treatment, reduced-motion behavior, and print layout.
 
@@ -49,7 +49,9 @@ Client-only state is limited to selections, filters, acknowledgement toggles, dr
 ## Failure behavior
 
 - Invalid JSON receives HTTP 400.
-- Non-object payloads receive HTTP 400.
+- Arrays and other non-object payloads receive HTTP 400.
+- Bodies over 4 KB receive HTTP 413 before JSON parsing.
+- Requests without an `application/json` media type receive HTTP 415 before the body is read.
 - Numeric inputs are finite-checked and clamped to documented ranges.
 - Invalid enums and terms fall back to safe defaults.
 - API failures retain the last successful dashboard and display an inline alert.
