@@ -23,7 +23,18 @@ test("renders the complete household overview instead of the starter", async () 
   assert.match(layout, /metadataBase: new URL\(canonicalOrigin\)/);
   assert.match(layout, /weekmark-household-lab\.charlielucas95\.chatgpt\.site/);
   assert.doesNotMatch(layout, /next\/headers|x-forwarded-host|x-forwarded-proto/);
+  assert.doesNotMatch(layout, /template:/);
   assert.doesNotMatch(`${page}${dashboard}${layout}`, /SkeletonPreview|codex-preview|Starter Project/);
+});
+
+test("public route metadata keeps each browser title authoritative and non-duplicated", async () => {
+  const [home, system] = await Promise.all([
+    readFile(new URL("app/page.tsx", root), "utf8"),
+    readFile(new URL("app/system/page.tsx", root), "utf8"),
+  ]);
+  assert.match(home, /title: "Weekmark Household Lab"/);
+  assert.doesNotMatch(home, /absolute:/);
+  assert.match(system, /title: "System reference \| Weekmark Household Lab"/);
 });
 
 test("scenario API recalculates through the shared model and disables caching", async () => {

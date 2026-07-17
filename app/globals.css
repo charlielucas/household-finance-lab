@@ -19,6 +19,34 @@
   --white: #ffffff;
   --shadow: 0 20px 50px rgba(23, 32, 56, 0.1);
   --radius: 18px;
+  --surface: var(--paper-bright);
+  --surface-raised: var(--white);
+  --surface-inverse: var(--ink);
+  --text-primary: var(--ink);
+  --text-secondary: var(--ink-soft);
+  --text-inverse: var(--white);
+  --status-positive: var(--mint);
+  --status-warning: var(--amber);
+  --status-negative: var(--coral);
+  --status-info: var(--blue);
+  --status-positive-text: #145f4d;
+  --status-warning-text: #704600;
+  --status-negative-text: #933b2e;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --elevation-1: 0 10px 24px rgba(23, 32, 56, 0.08);
+  --elevation-2: var(--shadow);
+  --duration-fast: 140ms;
+  --duration-standard: 220ms;
+  --easing-standard: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --focus-ring: #111827;
+  --focus-ring-on-dark: #ffffff;
   --mono: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
   --sans: "Avenir Next", Avenir, "Segoe UI", Helvetica, Arial, sans-serif;
   --display: "Iowan Old Style", "Baskerville", "Times New Roman", serif;
@@ -78,8 +106,9 @@ input:focus-visible,
 select:focus-visible,
 summary:focus-visible,
 [tabindex]:focus-visible {
-  outline: 3px solid #111827;
+  outline: 3px solid var(--focus-ring);
   outline-offset: 3px;
+  box-shadow: 0 0 0 2px var(--focus-ring-on-dark);
 }
 
 .skip-link {
@@ -146,8 +175,8 @@ summary:focus-visible,
 
 .brand > span {
   display: grid;
-  width: 42px;
-  height: 42px;
+  width: 44px;
+  height: 44px;
   place-items: center;
   border: 2px solid var(--ink);
   background: var(--blue);
@@ -196,6 +225,16 @@ summary:focus-visible,
   color: var(--ink);
 }
 
+.compact-system-link {
+  display: none;
+  min-height: 44px;
+  align-items: center;
+  color: var(--blue-dark);
+  font-size: 0.72rem;
+  font-weight: 850;
+  text-decoration: none;
+}
+
 .demo-chip,
 .confidence-chip {
   display: inline-flex;
@@ -212,6 +251,86 @@ summary:focus-visible,
   letter-spacing: 0.04em;
   text-transform: uppercase;
 }
+
+.status-badge {
+  display: inline-flex;
+  min-height: 28px;
+  align-items: center;
+  padding: 5px 8px;
+  border: 1px solid var(--line-dark);
+  background: var(--white);
+  color: var(--ink-soft);
+  font-family: var(--mono);
+  font-size: 0.61rem;
+  font-weight: 850;
+  letter-spacing: 0.04em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.status-positive {
+  border-color: color-mix(in srgb, var(--status-positive) 55%, var(--line));
+  background: var(--mint-pale);
+  color: #145f4d;
+}
+
+.status-warning {
+  border-color: color-mix(in srgb, var(--status-warning) 55%, var(--line));
+  background: var(--amber-pale);
+  color: #704600;
+}
+
+.status-negative {
+  border-color: color-mix(in srgb, var(--status-negative) 55%, var(--line));
+  background: var(--coral-pale);
+  color: #933b2e;
+}
+
+.status-info {
+  border-color: color-mix(in srgb, var(--status-info) 50%, var(--line));
+  background: color-mix(in srgb, var(--blue) 10%, var(--white));
+  color: var(--blue-dark);
+}
+
+.action-button {
+  min-height: 44px;
+  padding: 10px 14px;
+  border: 1px solid transparent;
+  font-size: 0.78rem;
+  font-weight: 850;
+  transition: background var(--duration-fast) var(--easing-standard), border-color var(--duration-fast) var(--easing-standard), color var(--duration-fast) var(--easing-standard);
+}
+
+.action-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.action-primary {
+  border-color: var(--blue-dark);
+  background: var(--blue);
+  color: var(--white);
+}
+
+.action-primary:hover:not(:disabled) { background: var(--blue-dark); }
+
+.action-secondary {
+  border-color: var(--blue-dark);
+  background: var(--white);
+  color: var(--blue-dark);
+}
+
+.action-secondary:hover:not(:disabled) { background: color-mix(in srgb, var(--blue) 9%, var(--white)); }
+
+.action-quiet {
+  border-color: transparent;
+  background: transparent;
+  color: var(--blue-dark);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.action-quiet:hover:not(:disabled) { background: color-mix(in srgb, var(--blue) 8%, transparent); }
 
 .hero {
   padding: 36px 0 70px;
@@ -411,7 +530,7 @@ summary:focus-visible,
 }
 
 .negative-text {
-  color: var(--coral) !important;
+  color: var(--status-negative-text) !important;
 }
 
 .hero-status .negative-text {
@@ -512,7 +631,7 @@ summary:focus-visible,
 
 .scenario-range input {
   width: 100%;
-  min-height: 34px;
+  min-height: 44px;
   margin: 7px 0 0;
   accent-color: var(--blue);
 }
@@ -761,7 +880,7 @@ summary:focus-visible,
   bottom: 4px;
   padding: 2px 5px;
   background: var(--paper-bright);
-  color: var(--coral);
+  color: var(--status-negative-text);
   font-family: var(--mono);
   font-size: 0.52rem;
   font-style: normal;
@@ -999,7 +1118,7 @@ summary:focus-visible,
 
 .severity i {
   margin-top: 8px;
-  color: rgba(255, 255, 255, 0.46);
+  color: rgba(255, 255, 255, 0.54);
   font-size: 0.6rem;
   font-style: normal;
 }
@@ -1329,15 +1448,15 @@ summary:focus-visible,
 }
 
 .verdict.ready {
-  color: var(--mint);
+  color: var(--status-positive-text);
 }
 
 .verdict.review {
-  color: var(--amber);
+  color: var(--status-warning-text);
 }
 
 .verdict.stop {
-  color: var(--coral);
+  color: var(--status-negative-text);
 }
 
 .financing-controls {
@@ -1457,11 +1576,11 @@ summary:focus-visible,
 }
 
 .quality-checks .pass > span {
-  color: var(--mint);
+  color: var(--status-positive-text);
 }
 
 .quality-checks .fail > span {
-  color: var(--coral);
+  color: var(--status-negative-text);
 }
 
 .quality-checks p {
@@ -1682,7 +1801,7 @@ summary:focus-visible,
 }
 
 .source-grid article small {
-  color: rgba(255, 255, 255, 0.42);
+  color: rgba(255, 255, 255, 0.54);
   font-family: var(--mono);
   font-size: 0.55rem;
 }
@@ -1708,7 +1827,7 @@ summary:focus-visible,
 }
 
 .method-notes span {
-  color: rgba(255, 255, 255, 0.45);
+  color: rgba(255, 255, 255, 0.54);
   font-family: var(--mono);
   font-size: 0.57rem;
   text-transform: uppercase;
@@ -1756,6 +1875,11 @@ summary:focus-visible,
   }
 
   .demo-chip {
+    margin-left: 0;
+  }
+
+  .compact-system-link {
+    display: inline-flex;
     margin-left: auto;
   }
 

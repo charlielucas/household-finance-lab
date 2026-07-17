@@ -7,30 +7,10 @@ const canonicalOrigin = "https://weekmark-household-lab.charlielucas95.chatgpt.s
 
 export const metadata: Metadata = {
   metadataBase: new URL(canonicalOrigin),
+  // Leaf routes provide their complete public title. Keeping one authoritative
+  // value here prevents the brand from being appended twice by Next metadata.
   title,
   description,
-  alternates: {
-    canonical: "/",
-  },
-  openGraph: {
-    description,
-    images: [{
-      url: "/og.png",
-      width: 1200,
-      height: 630,
-      alt: "Weekmark household planning dashboard",
-    }],
-    siteName: title,
-    title,
-    type: "website",
-    url: "/",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title,
-    description,
-    images: ["/og.png"],
-  },
 };
 
 export default function RootLayout({

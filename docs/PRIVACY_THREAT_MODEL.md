@@ -56,4 +56,4 @@ A future live-data adapter would materially change this threat model. Before add
 
 ## Residual risk
 
-Users can manually type values resembling their finances into scenario controls. The current app does not persist or transmit those values beyond the local server request, but screenshots, browser extensions, operating-system telemetry, and development tooling remain outside this application’s control.
+Users can manually type values resembling their finances into scenario controls. In a deployed copy, the browser sends those values in a same-origin POST request to the hosted Weekmark scenario endpoint so it can return a recalculated view. The application deliberately does not persist them, and responses use `Cache-Control: no-store`; however, hosting infrastructure, screenshots, browser extensions, operating-system telemetry, and development tooling remain outside this application's control. Use hypothetical values in the public demo.

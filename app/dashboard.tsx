@@ -8,6 +8,7 @@ import type {
   ScenarioInput,
   WeekPoint,
 } from "../lib/types.ts";
+import { MetricCard, ScenarioRange, SectionHeading } from "./ui/primitives";
 
 const dollars = new Intl.NumberFormat("en-US", {
   style: "currency",
@@ -70,82 +71,6 @@ function dateLabel(value: string): string {
 
 function confidenceLabel(value: string): string {
   return value === "modeled" ? "Model" : `${value.slice(0, 1).toUpperCase()}${value.slice(1)}`;
-}
-
-function SectionHeading({
-  eyebrow,
-  title,
-  copy,
-}: {
-  eyebrow: string;
-  title: string;
-  copy: string;
-}) {
-  return (
-    <div className="section-heading">
-      <div>
-        <p className="eyebrow">{eyebrow}</p>
-        <h2>{title}</h2>
-      </div>
-      <p>{copy}</p>
-    </div>
-  );
-}
-
-function MetricCard({
-  label,
-  value,
-  detail,
-  tone = "neutral",
-  source = "Modeled",
-}: {
-  label: string;
-  value: string;
-  detail: string;
-  tone?: "neutral" | "good" | "warn";
-  source?: string;
-}) {
-  return (
-    <article className={`metric-card ${tone}`}>
-      <div className="metric-meta"><span>{label}</span><i>{source}</i></div>
-      <strong>{value}</strong>
-      <p>{detail}</p>
-    </article>
-  );
-}
-
-function ScenarioRange({
-  label,
-  value,
-  minimum,
-  maximum,
-  step,
-  display,
-  onChange,
-}: {
-  label: string;
-  value: number;
-  minimum: number;
-  maximum: number;
-  step: number;
-  display: string;
-  onChange: (value: number) => void;
-}) {
-  return (
-    <label className="scenario-range">
-      <span><b>{label}</b><strong>{display}</strong></span>
-      <input
-        type="range"
-        min={minimum}
-        max={maximum}
-        step={step}
-        value={value}
-        aria-valuetext={display}
-        onChange={(event) => onChange(Number(event.target.value))}
-      />
-      <small><span>{minimum.toLocaleString()}</span><span>{maximum.toLocaleString()}</span></small>
-    </label>
-  );
 }
 
 function WeekInspector({ week }: { week: WeekPoint }) {
@@ -252,12 +177,14 @@ export default function Dashboard({ initialBundle }: { initialBundle: DashboardB
             <a href="#income">Income</a>
             <a href="#decisions">Decisions</a>
             <a href="#trends">Trends</a>
+            <a href="/system">System</a>
           </div>
+          <a className="compact-system-link" href="/system">System</a>
           <span className="demo-chip">Seeded public demo</span>
         </nav>
       </header>
 
-      <main id="main-content">
+      <main id="main-content" tabIndex={-1}>
         <section className="hero" id="top">
           <div className="demo-notice" role="note">
             <b>Fictional by design</b>
@@ -301,7 +228,7 @@ export default function Dashboard({ initialBundle }: { initialBundle: DashboardB
             <div>
               <p className="eyebrow">Scenario studio</p>
               <h2 id="scenario-title">Change the assumptions, not the evidence.</h2>
-              <p>All controls are bounded and recomputed through the local API. Nothing is persisted.</p>
+              <p>All controls are bounded and recomputed through Weekmark&apos;s scenario endpoint. The application does not persist them; use fictional values.</p>
             </div>
             <div className="preset-buttons" aria-label="Scenario presets">
               <button type="button" onClick={() => applyPreset("conservative")}>Conservative</button>
@@ -493,9 +420,9 @@ export default function Dashboard({ initialBundle }: { initialBundle: DashboardB
               <div className="financing-controls">
                 <label><span>Purpose</span><select value={draft.financing.purpose} onChange={(event) => updateFinancing({ purpose: event.target.value as FinancingScenario["purpose"] })}><option value="home-project">Home project</option><option value="vehicle-repair">Vehicle repair</option><option value="education">Education</option></select></label>
                 <label><span>Amount</span><input type="number" min="1000" max="100000" step="500" value={draft.financing.amount} onChange={(event) => updateFinancing({ amount: Number(event.target.value) })} /></label>
-                <label><span>Rate</span><div className="input-suffix"><input type="number" min="0" max="36" step="0.25" value={draft.financing.annualRate} onChange={(event) => updateFinancing({ annualRate: Number(event.target.value) })} /><i>%</i></div></label>
+                <label><span>Annual rate (%)</span><div className="input-suffix"><input type="number" min="0" max="36" step="0.25" value={draft.financing.annualRate} onChange={(event) => updateFinancing({ annualRate: Number(event.target.value) })} /><i aria-hidden="true">%</i></div></label>
                 <label><span>Term</span><select value={draft.financing.termMonths} onChange={(event) => updateFinancing({ termMonths: Number(event.target.value) })}>{[24, 36, 48, 60, 72, 84].map((term) => <option key={term} value={term}>{term} months</option>)}</select></label>
-                <label><span>Fee</span><div className="input-suffix"><input type="number" min="0" max="10" step="0.25" value={draft.financing.originationFeeRate} onChange={(event) => updateFinancing({ originationFeeRate: Number(event.target.value) })} /><i>%</i></div></label>
+                <label><span>Origination fee (%)</span><div className="input-suffix"><input type="number" min="0" max="10" step="0.25" value={draft.financing.originationFeeRate} onChange={(event) => updateFinancing({ originationFeeRate: Number(event.target.value) })} /><i aria-hidden="true">%</i></div></label>
                 <label className="check-control"><input type="checkbox" checked={draft.financing.fixedRate} onChange={(event) => updateFinancing({ fixedRate: event.target.checked })} /><span>Fixed rate</span></label>
                 <label className="check-control"><input type="checkbox" checked={draft.financing.prepaymentPenalty} onChange={(event) => updateFinancing({ prepaymentPenalty: event.target.checked })} /><span>Prepayment penalty</span></label>
               </div>

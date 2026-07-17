@@ -27,7 +27,7 @@ Open the local URL printed by the development server. Then:
 - choose a conservative, baseline, or growth preset;
 - adjust the reliable-income, variable-income, reserve, weekly-cap, fixed-cost, or cash-floor controls;
 - select **Run scenario** to recalculate through the local API;
-- inspect a runway week, filter and acknowledge exceptions, edit the generalized financing quote, and compare monthly trends.
+- inspect a runway week, filter and acknowledge exceptions, edit the generalized financing quote, compare monthly trends, or open the `/system` living reference.
 
 Validation commands:
 
@@ -67,7 +67,7 @@ flowchart LR
     C --> K[Runway, exceptions, tax, quote gate]
 ```
 
-The initial page is computed on the server. Interactive scenario changes are sent to a local route, normalized, recalculated by the same pure model, and returned with `Cache-Control: no-store`. The browser keeps only transient UI state such as the active chart point and acknowledged signals.
+The initial page is computed on the server. Interactive scenario changes are sent to the same-origin scenario route, normalized, recalculated by the same pure model, and returned with `Cache-Control: no-store`. The application does not persist the values, but visitors should use hypothetical inputs because the route is hosted. The browser keeps only transient UI state such as the active chart point and acknowledged signals.
 
 See [Architecture](docs/ARCHITECTURE.md) for module boundaries and design decisions.
 
@@ -83,7 +83,7 @@ The domain model intentionally has no fields for:
 - access tokens, credentials, or login state;
 - real household names, employers, addresses, or financial institutions.
 
-Tests scan both generated output and source content for restricted key names and known private identifiers. See the [Privacy threat model](docs/PRIVACY_THREAT_MODEL.md).
+Tests scan generated output for restricted key names and identifier-shaped values, and scan application source for personal paths, runtime secrets, live-finance connector vocabulary, and direct remote-data reads. See the [Privacy threat model](docs/PRIVACY_THREAT_MODEL.md).
 
 ## Key model formulas
 
@@ -158,6 +158,7 @@ Accessibility work includes semantic landmarks, a skip link, visible focus, mini
 - [Metrics and formulas](docs/METRICS.md)
 - [Privacy threat model](docs/PRIVACY_THREAT_MODEL.md)
 - [Accessibility](docs/ACCESSIBILITY.md)
+- [Interface system](docs/DESIGN_SYSTEM.md)
 
 ## License
 
