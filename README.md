@@ -9,7 +9,7 @@ Weekmark is a clean-room public portfolio project for weekly household financial
 
 The application demonstrates an interactive React dashboard, a server-rendered initial state, a validated scenario API, deterministic synthetic data, responsive information design, accessible alternatives to charts, model documentation, and privacy-by-construction.
 
-**Live demo:** Not published. This repository is currently local-only by design.
+**Live demo:** [weekmark-household-lab.charlielucas95.chatgpt.site](https://weekmark-household-lab.charlielucas95.chatgpt.site)
 
 > No live financial data is used. Every amount, label, obligation, event, and trend is fictional and reproducible from the public seed in `lib/seed.ts`.
 
@@ -160,4 +160,4 @@ Accessibility work includes semantic landmarks, a skip link, visible focus, mini
 
 ## License
 
-No open-source license has been selected. This local portfolio project is provided for review only; reuse rights are not granted.
+No open-source license has been selected. This public portfolio project is provided for review only; reuse rights are not granted.

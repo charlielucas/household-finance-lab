@@ -29,9 +29,9 @@ test("scenario API recalculates through the shared model and disables caching", 
   assert.match(route, /status: 400/);
 });
 
-test("portfolio README leads with public-demo boundaries and supporting evidence", async () => {
+test("portfolio README leads with the public demo, boundaries, and supporting evidence", async () => {
   const readme = await readFile(new URL("README.md", root), "utf8");
-  assert.match(readme, /Live demo:\*\* Not published/);
+  assert.match(readme, /Live demo:\*\* \[weekmark-household-lab\.charlielucas95\.chatgpt\.site\]/);
   assert.match(readme, /Quick start \(under five minutes\)/);
   assert.match(readme, /Feature tour/);
   assert.match(readme, /```mermaid/);
