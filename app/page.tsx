@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   alternates: { canonical: "/" },
   openGraph: {
     title: "Weekmark Household Lab",
-    description: "A clean-room household finance dashboard built with deterministic fictional data.",
+    description: "A household planning dashboard built with repeatable fictional data.",
     images: [{
       url: "/og.png",
       width: 1200,
@@ -21,7 +21,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Weekmark Household Lab",
-    description: "A clean-room household finance dashboard built with deterministic fictional data.",
+    description: "A household planning dashboard built with repeatable fictional data.",
     images: ["/og.png"],
   },
 };

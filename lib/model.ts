@@ -237,7 +237,7 @@ function buildExceptions(
     id: "known-event",
     severity: "note",
     title: `${nextEvent.label} is already modeled`,
-    detail: `${nextEvent.amount} lands in week ${nextEvent.week}; it is included in the runway, not a surprise buffer.`,
+    detail: `${nextEvent.amount} lands in week ${nextEvent.week}. It is already included in the cash forecast.`,
     action: "Confirm the amount during the weekly review.",
     sourceId: "seed-ledger",
   });

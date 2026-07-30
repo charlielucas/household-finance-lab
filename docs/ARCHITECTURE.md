@@ -2,7 +2,9 @@
 
 ## Goals
 
-Weekmark demonstrates a portfolio-grade household-finance product without importing or imitating a private financial application. The architecture prioritizes deterministic behavior, inspectable formulas, small trust boundaries, responsive interaction, and a clear separation between evidence and assumptions.
+Weekmark is a public household planning project built without private financial
+data or code. The architecture keeps the calculations repeatable, the formulas
+inspectable, and the boundary between seeded data and user assumptions clear.
 
 ## Runtime shape
 
@@ -26,7 +28,7 @@ flowchart TD
 
 ## Why a server route when data is synthetic?
 
-The scenario endpoint demonstrates a realistic full-stack seam:
+The scenario endpoint keeps the calculation on the server:
 
 - the browser never owns the canonical calculation;
 - server and initial-render calculations share one model;
@@ -40,9 +42,9 @@ The route is intentionally stateless. No database or browser persistence is requ
 
 There are three state classes:
 
-1. **Seeded evidence** — deterministic ledger, obligations, one-off events, and trends.
-2. **Scenario assumptions** — income, reserve rate, spending cap, cost adjustment, cash floor, and financing terms.
-3. **Derived outputs** — runway, safe-to-spend cap, waterfall, exceptions, and quality checks.
+1. **Seeded data:** deterministic ledger, obligations, one-time events, and trends.
+2. **Scenario assumptions:** income, reserve rate, spending limit, cost adjustment, cash floor, and financing terms.
+3. **Calculated results:** cash forecast, spending limit, income breakdown, alerts, and financing checks.
 
 Client-only state is limited to selections, filters, acknowledgement toggles, drafts, loading, and error feedback. Acknowledgements intentionally reset on reload.
 
@@ -57,7 +59,7 @@ Client-only state is limited to selections, filters, acknowledgement toggles, dr
 - API failures retain the last successful dashboard and display an inline alert.
 - All scenario responses use `Cache-Control: no-store`.
 
-## Clean-room constraints
+## Public project boundary
 
 - The project lives in its own new folder and has no private-repository ancestry.
 - The data vocabulary is generic and the brand is unique to the demo.

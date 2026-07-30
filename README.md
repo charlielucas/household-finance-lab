@@ -1,35 +1,32 @@
 # Weekmark Household Lab
 
-Weekmark is a clean-room public portfolio project for weekly household financial planning. It is designed to answer four practical questions without centering the experience on debt payoff:
+I built Weekmark to test a practical household planning dashboard with
+synthetic data. It helps answer four questions:
 
-1. What is safe to spend before the next decision window?
-2. Where does operating cash become tight over the next 13 weeks?
-3. Is variable income being separated from its tax reserve?
-4. Does a financing choice pass both cash-flow and quote-quality guardrails?
+1. What is safe to spend before the next planning point?
+2. When could operating cash get tight over the next 13 weeks?
+3. Is enough variable income being reserved for taxes?
+4. Does a financing quote fit the budget and meet basic quality checks?
 
-The application demonstrates an interactive React dashboard, a server-rendered initial state, a validated scenario API, deterministic synthetic data, responsive information design, accessible alternatives to charts, model documentation, and privacy-by-construction.
+[View the live demo](https://weekmark-household-lab.charlielucas95.chatgpt.site)
 
-**Live demo:** [weekmark-household-lab.charlielucas95.chatgpt.site](https://weekmark-household-lab.charlielucas95.chatgpt.site)
+All amounts, names, obligations, events, and trends are fictional. The public
+seed in `lib/seed.ts` reproduces the same data on every run.
 
-> No live financial data is used. Every amount, label, obligation, event, and trend is fictional and reproducible from the public seed in `lib/seed.ts`.
+## Run it locally
 
-## Quick start (under five minutes)
-
-Requirements: Node.js 22.13 or newer.
+This project requires Node.js 22.13 or newer.
 
 ```bash
 npm install
 npm run dev
 ```
 
-Open the local URL printed by the development server. Then:
+Open the local URL printed by the development server. You can choose a preset,
+adjust income and spending assumptions, run the scenario, inspect the cash
+forecast, review alerts, or compare financing terms.
 
-- choose a conservative, baseline, or growth preset;
-- adjust the reliable-income, variable-income, reserve, weekly-cap, fixed-cost, or cash-floor controls;
-- select **Run scenario** to recalculate through the local API;
-- inspect a runway week, filter and acknowledge exceptions, edit the generalized financing quote, compare monthly trends, or open the `/system` living reference.
-
-Validation commands:
+Use these commands to check the project:
 
 ```bash
 npm run lint
@@ -39,55 +36,69 @@ npm run build
 npm audit --audit-level=high
 ```
 
-## Feature tour
+## What is included
 
-- **Weekly cockpit:** a safe flexible-spending cap, cash-floor guardrail, 14-day commitments, fixed-cost load, and an inspectable 13-week runway.
-- **Exception inbox:** prioritized cash, tax, behavior, event, and financing signals with session-only acknowledgements.
-- **Income and tax waterfall:** reliable net income stays separate from variable gross, modeled reserve, usable variable income, obligations, flexible spending, financing, and margin.
-- **Fixed-cost calendar:** recurring obligations appear in due-day order with essential/reviewable status and visible confidence.
-- **Financing quality gate:** a generalized household decision checks fixed versus variable rate, prepayment penalty, fee level, payment room, and 13-week cash-floor preservation.
-- **Trends and net position:** twelve seeded months compare inflow with spending and reconstruct assets minus liabilities.
-- **Provenance and confidence:** every source is labeled as seeded evidence, current-session input, or modeled output.
-- **Responsive and accessible interaction:** 44-pixel controls, keyboard focus, chart tables, reduced-motion support, horizontal-scroll affordances, and print cleanup.
+- A weekly spending limit, upcoming commitments, fixed costs, and a cash
+  forecast covering 13 weeks
+- Alerts for cash, taxes, spending behavior, events, and financing choices
+- A breakdown of reliable income, variable income, tax reserves, obligations,
+  spending, financing, and remaining margin
+- A calendar of recurring bills with due dates and confidence labels
+- Financing checks for rate type, prepayment penalties, fees, payment room, and
+  the projected cash floor
+- Twelve months of synthetic trends for income, spending, assets, and
+  liabilities
+- Source and confidence labels that distinguish seeded data, current inputs,
+  and calculated results
+- Keyboard support, chart tables, reduced motion support, responsive layouts,
+  and a print view
 
-## Architecture and data flow
+## How it works
 
 ```mermaid
 flowchart LR
     A[Public numeric seed] --> B[Deterministic demo ledger]
-    B --> C[Pure calculation model]
-    D[Bounded scenario controls] --> E[POST /api/scenario]
-    E --> F[Input normalization]
+    B --> C[Calculation model]
+    D[Scenario controls] --> E[POST /api/scenario]
+    E --> F[Input validation]
     F --> C
-    C --> G[Dashboard bundle]
+    C --> G[Dashboard data]
     G --> H[Server-rendered initial view]
-    G --> I[Interactive client dashboard]
+    G --> I[Interactive dashboard]
     I --> D
-    B --> J[Provenance labels]
-    C --> K[Runway, exceptions, tax, quote gate]
+    B --> J[Source labels]
+    C --> K[Forecast, alerts, taxes, financing checks]
 ```
 
-The initial page is computed on the server. Interactive scenario changes are sent to the same-origin scenario route, normalized, recalculated by the same pure model, and returned with `Cache-Control: no-store`. The application does not persist the values, but visitors should use hypothetical inputs because the route is hosted. The browser keeps only transient UI state such as the active chart point and acknowledged signals.
+The server calculates the initial page. Scenario changes go to the same-origin
+API, which validates the inputs and runs the same calculation model. The app
+does not save those values. Visitors should still use hypothetical inputs
+because the API is hosted.
 
-See [Architecture](docs/ARCHITECTURE.md) for module boundaries and design decisions.
+See [Architecture](docs/ARCHITECTURE.md) for the module boundaries and design
+decisions.
 
-## Deterministic synthetic dataset and privacy boundary
+## Data and privacy
 
-`createDemoLedger()` uses a fixed integer seed and a small deterministic pseudo-random generator. It does not read the current time, environment variables, browser storage, files, network services, or external accounts. Repeated calls produce byte-equivalent data.
+`createDemoLedger()` uses a fixed integer seed and a small deterministic random
+number generator. It does not read the current time, browser storage, local
+files, network services, environment variables, or external accounts.
 
-The domain model intentionally has no fields for:
+The data model has no fields for:
 
-- merchants or payees;
-- transaction rows, memos, or imported statements;
-- account or routing numbers;
-- access tokens, credentials, or login state;
-- real household names, employers, addresses, or financial institutions.
+- merchants, payees, transactions, memos, or imported statements
+- account numbers, routing numbers, access tokens, or credentials
+- real household names, employers, addresses, or financial institutions
 
-Tests scan generated output for restricted key names and identifier-shaped values, and scan application source for personal paths, runtime secrets, live-finance connector vocabulary, and direct remote-data reads. See the [Privacy threat model](docs/PRIVACY_THREAT_MODEL.md).
+Tests check the generated data and source code for restricted field names,
+identifier patterns, personal file paths, runtime secrets, and direct remote
+data access. See the [Privacy threat model](docs/PRIVACY_THREAT_MODEL.md) for
+the full boundary.
 
-## Key model formulas
+## Calculations
 
-The full definitions and limitations are in [Metrics and formulas](docs/METRICS.md).
+Full definitions and limits are documented in
+[Metrics and formulas](docs/METRICS.md).
 
 ### Spendable and protected cash
 
@@ -96,63 +107,67 @@ spendable cash = operating cash
 protected cash = tax reserve + health reserve
 ```
 
-Protected cash is displayed but excluded from the 13-week operating runway.
+Protected cash is shown separately and left out of the operating cash forecast.
 
-### Variable-income waterfall
+### Variable income
 
 ```text
-variable tax set-aside = variable gross × selected reserve rate
-variable usable = variable gross − variable tax set-aside
+variable tax reserve = variable gross * selected reserve rate
+variable usable = variable gross - variable tax reserve
 usable monthly income = reliable net + variable usable
 ```
 
-### Thirteen-week runway
+### Cash forecast
 
 ```text
-ending cash[w] = ending cash[w−1]
+ending cash[w] = ending cash[w-1]
                + modeled income[w]
-               − calendar obligations[w]
-               − weekly flexible cap
-               − known one-off events[w]
-               − weeklyized financing payment
+               - calendar obligations[w]
+               - weekly spending limit
+               - known one-time events[w]
+               - weekly financing payment
 ```
 
 ### Financing quote
 
 ```text
-financed amount = requested proceeds ÷ (1 − origination fee rate)
+financed amount = requested proceeds / (1 - origination fee rate)
 monthly payment = standard fixed-rate amortization payment
-financing cost = monthly payment × term − requested proceeds
+financing cost = monthly payment * term - requested proceeds
 ```
 
-The gate is a transparent product heuristic, not underwriting or financial advice.
+These checks are planning heuristics. They are not underwriting, tax advice, or
+financial advice.
 
-## Tests and accessibility
+## Testing and accessibility
 
-The test suite covers:
+The test suite covers deterministic data generation, input validation, cash
+forecast reconciliation, scenario changes, amortization, financing checks, API
+headers, and privacy checks.
 
-- deterministic seed reproduction;
-- input bounds and safe normalization;
-- runway length, reconciliation, and scenario sensitivity;
-- amortization and financing-gate behavior;
-- privacy-key and private-identifier scans;
-- required product surfaces, docs, and API headers.
+GitHub Actions runs the dependency audit, lint, type checking, tests, and
+production build. Dependabot checks npm and GitHub Actions dependencies each
+week.
 
-CI is defined in `.github/workflows/ci.yml` and runs install, a high-severity dependency audit, lint, typecheck, tests, and production build on pushes and pull requests. Dependabot checks npm and GitHub Actions dependencies weekly; moderate advisories remain visible for review without blocking safe updates.
+Accessibility work includes semantic landmarks, a skip link, visible keyboard
+focus, labeled controls, chart tables, reduced motion support, responsive
+layouts, and a print mode. The manual checklist and current gaps are in
+[Accessibility](docs/ACCESSIBILITY.md).
 
-Accessibility work includes semantic landmarks, a skip link, visible focus, minimum touch targets, explicit range labels and value text, chart point buttons, data-table alternatives, a single concise live region for scenario results, reduced-motion support, responsive reflow, and a print mode. See [Accessibility](docs/ACCESSIBILITY.md) for the manual QA checklist and known verification gaps.
+## Limits
 
-## Limitations
+- The project uses synthetic data and has not been connected to a bank,
+  budgeting tool, payroll system, or tax return.
+- The cash forecast assumes reliable income every two weeks and spreads
+  variable income evenly across each week.
+- Recurring obligations do not model statement changes, late fees, or partial
+  payments.
+- The tax reserve is a planning estimate, not a tax calculation.
+- Financing calculations assume a fixed payment schedule and on-time payments.
+- Scenario changes and acknowledged alerts are not saved.
+- The app has no authentication because it has no private or live data.
 
-- All data is synthetic; the model has not been reconciled to a bank, budgeting tool, payroll system, or tax return.
-- The 13-week runway assumes biweekly reliable net income and evenly distributed weekly variable income.
-- Calendar obligations repeat monthly and do not model statement-cycle changes, late fees, or partial payments.
-- Taxes are a reserve heuristic, not a liability estimate or tax recommendation.
-- Financing calculations assume fixed amortization, fees withheld from proceeds, and on-time payments.
-- Scenario state and acknowledgements are intentionally not persisted.
-- There is no authentication because the app has no private or live data.
-
-## Supporting documentation
+## Documentation
 
 - [Architecture](docs/ARCHITECTURE.md)
 - [Metrics and formulas](docs/METRICS.md)
@@ -162,4 +177,5 @@ Accessibility work includes semantic landmarks, a skip link, visible focus, mini
 
 ## License
 
-No open-source license has been selected. This public portfolio project is provided for review only; reuse rights are not granted.
+No open source license has been selected. This public portfolio project is
+available for review, but reuse rights are not granted.

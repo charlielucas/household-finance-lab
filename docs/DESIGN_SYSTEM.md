@@ -26,7 +26,7 @@ Weekmark's blue/mint identity is deliberately scoped to this public, synthetic d
 - Use the display face for major decisions and the sans face for explanation.
 - Use the mono face for compact labels, evidence, dates, and bounded numeric controls.
 - Start with one clear decision in a section heading, then place context in a short supporting sentence.
-- Build desktop grids with `minmax(0, …)` and collapse to a single readable column before content becomes cramped.
+- Build desktop grids with `minmax(0, ...)` and collapse to a single readable column before content becomes cramped.
 - Prefer borders, spacing, and hierarchy over large shadows or decorative illustration.
 
 ## Shared components

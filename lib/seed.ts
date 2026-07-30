@@ -107,14 +107,14 @@ export function createDemoLedger(): DemoLedger {
       },
       {
         id: "runway-model",
-        label: "13-week runway model",
+        label: "13-week cash forecast",
         description: "Biweekly reliable income, weekly variable income, calendar obligations, one-off events, and a weekly flexible cap.",
         confidence: "modeled",
         asOf: "Calculated on request",
       },
       {
         id: "quote-gate",
-        label: "Financing quality gate",
+        label: "Financing checks",
         description: "Transparent rule checks for rate structure, fees, penalties, payment room, and cash-floor preservation.",
         confidence: "modeled",
         asOf: "Calculated on request",

@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 const title = "Weekmark Household Lab";
-const description = "A clean-room household finance dashboard built with deterministic fictional data.";
+const description = "A household planning dashboard built with repeatable fictional data.";
 const canonicalOrigin = "https://weekmark-household-lab.charlielucas95.chatgpt.site";
 
 export const metadata: Metadata = {
