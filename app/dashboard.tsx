@@ -79,14 +79,14 @@ function WeekInspector({ week }: { week: WeekPoint }) {
     <aside className="week-inspector" aria-label={`Week ${week.week} details`}>
       <div>
         <p className="eyebrow">Selected week</p>
-        <h3>Week {week.week} · {dateLabel(week.startDate)}–{dateLabel(week.endDate)}</h3>
+        <h3>Week {week.week}: {dateLabel(week.startDate)} to {dateLabel(week.endDate)}</h3>
       </div>
       <dl>
         <div><dt>Income</dt><dd>+{dollars.format(week.income)}</dd></div>
-        <div><dt>Obligations</dt><dd>−{dollars.format(week.obligations)}</dd></div>
-        <div><dt>Flexible plan</dt><dd>−{dollars.format(week.flexible)}</dd></div>
-        <div><dt>Known one-offs</dt><dd>−{dollars.format(week.oneOff)}</dd></div>
-        <div className={net >= 0 ? "positive" : "negative"}><dt>Weekly change</dt><dd>{net >= 0 ? "+" : "−"}{dollars.format(Math.abs(net))}</dd></div>
+        <div><dt>Obligations</dt><dd>-{dollars.format(week.obligations)}</dd></div>
+        <div><dt>Weekly spending</dt><dd>-{dollars.format(week.flexible)}</dd></div>
+        <div><dt>Known one-time costs</dt><dd>-{dollars.format(week.oneOff)}</dd></div>
+        <div className={net >= 0 ? "positive" : "negative"}><dt>Weekly change</dt><dd>{net >= 0 ? "+" : "-"}{dollars.format(Math.abs(net))}</dd></div>
         <div><dt>Ending operating cash</dt><dd>{dollars.format(week.endingBalance)}</dd></div>
       </dl>
     </aside>
@@ -193,20 +193,20 @@ export default function Dashboard({ initialBundle }: { initialBundle: DashboardB
           </div>
           <div className="hero-grid">
             <div className="hero-copy">
-              <p className="eyebrow">Weekly operating view · {ledger.householdLabel}</p>
-              <h1>Make the next seven days boring—in a good way.</h1>
+              <p className="eyebrow">Weekly planning view | {ledger.householdLabel}</p>
+              <h1>See what the next 13 weeks could look like.</h1>
               <p>
-                A deterministic household-finance lab for testing cash runway, variable-income taxes,
-                recurring obligations, and financing choices without exposing real financial data.
+                This demo uses fictional data to explore cash balances, tax reserves,
+                recurring obligations, and financing choices.
               </p>
               <div className="hero-actions">
-                <a className="primary-action" href="#cockpit">Open weekly cockpit</a>
+                <a className="primary-action" href="#cockpit">Open weekly plan</a>
                 <a className="secondary-action" href="#methods">Read the model</a>
               </div>
             </div>
             <div className="hero-status">
               <div className="hero-status-top">
-                <span>Safe flexible cap · week 1</span>
+                <span>Weekly spending limit | week 1</span>
                 <i className={metrics.weeklySafeToSpend >= scenario.flexibleWeeklyCap ? "stable" : "pressure"}>
                   {metrics.weeklySafeToSpend >= scenario.flexibleWeeklyCap ? "Inside guardrails" : "Needs adjustment"}
                 </i>
@@ -241,13 +241,13 @@ export default function Dashboard({ initialBundle }: { initialBundle: DashboardB
             <ScenarioRange label="Variable gross / month" value={draft.variableGrossMonthly} minimum={0} maximum={6_000} step={50} display={dollars.format(draft.variableGrossMonthly)} onChange={(value) => setDraft((current) => ({ ...current, variableGrossMonthly: value }))} />
             <ScenarioRange label="Variable-income reserve" value={draft.variableTaxRate} minimum={0} maximum={45} step={1} display={`${draft.variableTaxRate}%`} onChange={(value) => setDraft((current) => ({ ...current, variableTaxRate: value }))} />
             <ScenarioRange label="Flexible weekly cap" value={draft.flexibleWeeklyCap} minimum={150} maximum={1_100} step={10} display={dollars.format(draft.flexibleWeeklyCap)} onChange={(value) => setDraft((current) => ({ ...current, flexibleWeeklyCap: value }))} />
-            <ScenarioRange label="Fixed-cost adjustment" value={draft.fixedCostAdjustment} minimum={-500} maximum={1_500} step={25} display={`${draft.fixedCostAdjustment >= 0 ? "+" : "−"}${dollars.format(Math.abs(draft.fixedCostAdjustment))}`} onChange={(value) => setDraft((current) => ({ ...current, fixedCostAdjustment: value }))} />
+            <ScenarioRange label="Fixed cost adjustment" value={draft.fixedCostAdjustment} minimum={-500} maximum={1_500} step={25} display={`${draft.fixedCostAdjustment >= 0 ? "+" : "-"}${dollars.format(Math.abs(draft.fixedCostAdjustment))}`} onChange={(value) => setDraft((current) => ({ ...current, fixedCostAdjustment: value }))} />
             <ScenarioRange label="Operating cash floor" value={draft.cashFloor} minimum={2_000} maximum={15_000} step={250} display={dollars.format(draft.cashFloor)} onChange={(value) => setDraft((current) => ({ ...current, cashFloor: value }))} />
           </div>
           <div className="scenario-submit">
             <p>{hasPendingChanges ? "Pending changes are not yet reflected below." : "Dashboard and controls are synchronized."}</p>
             <button type="button" onClick={() => void runScenario()} disabled={running || !hasPendingChanges}>
-              {running ? "Recalculating…" : hasPendingChanges ? "Run scenario" : "Scenario current"}
+              {running ? "Recalculating..." : hasPendingChanges ? "Run scenario" : "Scenario current"}
             </button>
           </div>
           {scenarioError && <p className="scenario-error" role="alert">{scenarioError}</p>}
@@ -256,12 +256,12 @@ export default function Dashboard({ initialBundle }: { initialBundle: DashboardB
 
         <section className="page-section cockpit" id="cockpit">
           <SectionHeading
-            eyebrow="01 · Weekly cockpit"
-            title="The whole plan has one job: preserve optionality."
-            copy="The default view starts with the next decision window, then lets the reader inspect the 13-week consequence."
+            eyebrow="01 | Weekly plan"
+            title="Start with this week, then check the full forecast."
+            copy="The first view shows the immediate spending decision and the projected cash balance for the next 13 weeks."
           />
           <div className="metric-grid">
-            <MetricCard label="Safe flexible cap" value={dollars.format(metrics.weeklySafeToSpend)} detail={`Selected plan is ${dollars.format(scenario.flexibleWeeklyCap)} per week.`} tone={metrics.weeklySafeToSpend >= scenario.flexibleWeeklyCap ? "good" : "warn"} />
+            <MetricCard label="Weekly spending limit" value={dollars.format(metrics.weeklySafeToSpend)} detail={`Selected plan is ${dollars.format(scenario.flexibleWeeklyCap)} per week.`} tone={metrics.weeklySafeToSpend >= scenario.flexibleWeeklyCap ? "good" : "warn"} />
             <MetricCard label="Lowest projected cash" value={dollars.format(metrics.lowestBalance)} detail={`Week ${metrics.lowestWeek}; floor is ${dollars.format(scenario.cashFloor)}.`} tone={metrics.lowestBalance >= scenario.cashFloor ? "good" : "warn"} />
             <MetricCard label="Next 14 days committed" value={dollars.format(metrics.nextFourteenDayObligations)} detail="Calendar obligations plus known one-off events." source="Seed + model" />
             <MetricCard label="Fixed-cost load" value={`${metrics.fixedCostRatio.toFixed(1)}%`} detail="Monthly fixed obligations divided by reliable net income." tone={metrics.fixedCostRatio <= 55 ? "good" : "warn"} />
@@ -314,9 +314,9 @@ export default function Dashboard({ initialBundle }: { initialBundle: DashboardB
 
         <section className="page-section signals-section" id="signals">
           <SectionHeading
-            eyebrow="02 · Exception inbox"
-            title="Review what changed, not every number."
-            copy="Signals are derived from transparent thresholds. Acknowledging one changes only this browser session."
+            eyebrow="02 | Alerts"
+            title="Review the items that need attention."
+            copy="Each alert comes from a visible threshold. Acknowledging one changes only this browser session."
           />
           <div className="signal-toolbar">
             <div className="signal-filters" role="group" aria-label="Filter exceptions">
@@ -326,7 +326,7 @@ export default function Dashboard({ initialBundle }: { initialBundle: DashboardB
                 </button>
               ))}
             </div>
-            <span>{filteredExceptions.length} visible · {acknowledged.length} acknowledged</span>
+            <span>{filteredExceptions.length} visible | {acknowledged.length} acknowledged</span>
           </div>
           <div className="exception-list">
             {filteredExceptions.map((item) => {
@@ -344,13 +344,13 @@ export default function Dashboard({ initialBundle }: { initialBundle: DashboardB
 
         <section className="page-section income-section" id="income">
           <SectionHeading
-            eyebrow="03 · Income + tax waterfall"
-            title="Variable income is useful only after its reserve is protected."
-            copy="The waterfall keeps reliable net income separate from modeled variable gross and makes the tax set-aside visible."
+            eyebrow="03 | Income and tax reserve"
+            title="Keep the tax reserve separate from usable income."
+            copy="This view separates reliable net income, variable gross income, the tax reserve, expenses, and remaining margin."
           />
           <div className="income-layout">
             <div className="panel waterfall-panel">
-              <div className="panel-heading"><div><p className="eyebrow">Monthly operating waterfall</p><h3>From inflow to margin</h3></div><span className="confidence-chip">Scenario + model</span></div>
+              <div className="panel-heading"><div><p className="eyebrow">Monthly income breakdown</p><h3>From income to remaining margin</h3></div><span className="confidence-chip">Scenario + model</span></div>
               <div className="waterfall">
                 {[
                   { label: "Reliable net", value: metrics.income.reliableNet, tone: "income" },
@@ -364,7 +364,7 @@ export default function Dashboard({ initialBundle }: { initialBundle: DashboardB
                   <div className="waterfall-row" key={item.label}>
                     <span>{item.label}</span>
                     <div className="waterfall-track" aria-hidden="true"><i className={item.tone} style={{ width: `${Math.max(2, Math.abs(item.value) / waterfallMaximum * 100)}%` }} /></div>
-                    <b className={item.value < 0 ? "negative-text" : ""}>{item.value < 0 ? "−" : "+"}{dollars.format(Math.abs(item.value))}</b>
+                    <b className={item.value < 0 ? "negative-text" : ""}>{item.value < 0 ? "-" : "+"}{dollars.format(Math.abs(item.value))}</b>
                   </div>
                 ))}
               </div>
@@ -385,9 +385,9 @@ export default function Dashboard({ initialBundle }: { initialBundle: DashboardB
 
         <section className="page-section decisions-section" id="decisions">
           <SectionHeading
-            eyebrow="04 · Obligations + financing decisions"
-            title="A payment is affordable only when the calendar and the quote agree."
-            copy="Recurring costs stay separate from a generalized financing-quality gate so the dashboard remains useful beyond debt payoff."
+            eyebrow="04 | Bills and financing"
+            title="Check the payment against the full monthly plan."
+            copy="Recurring costs and financing terms are shown separately so each part of the decision can be reviewed."
           />
           <div className="obligation-summary">
             <div><span>Monthly obligations</span><strong>{dollars.format(monthlyObligations)}</strong><small>{metrics.fixedCostRatio.toFixed(1)}% of reliable net</small></div>
@@ -403,7 +403,7 @@ export default function Dashboard({ initialBundle }: { initialBundle: DashboardB
                     <time dateTime={`2026-01-${String(item.dayOfMonth).padStart(2, "0")}`}>{String(item.dayOfMonth).padStart(2, "0")}</time>
                     <div>
                       <span>{item.label}</span>
-                      <small>{item.category} · {item.essential ? "essential" : "reviewable"}</small>
+                      <small>{item.category} | {item.essential ? "essential" : "reviewable"}</small>
                       <span className={`obligation-confidence ${item.confidence}`}>{confidenceLabel(item.confidence)} confidence</span>
                     </div>
                     <b>{dollars.format(item.monthlyAmount)}</b>
@@ -414,7 +414,7 @@ export default function Dashboard({ initialBundle }: { initialBundle: DashboardB
 
             <div className="panel financing-panel">
               <div className="panel-heading">
-                <div><p className="eyebrow">Financing quality gate</p><h3>Test a household decision</h3></div>
+                <div><p className="eyebrow">Financing checks</p><h3>Test a household decision</h3></div>
                 <span className={`verdict ${metrics.financing.verdict}`}>{metrics.financing.verdict}</span>
               </div>
               <div className="financing-controls">
@@ -441,9 +441,9 @@ export default function Dashboard({ initialBundle }: { initialBundle: DashboardB
 
         <section className="page-section trends-section" id="trends">
           <SectionHeading
-            eyebrow="05 · Movement over time"
-            title="Direction matters more than a single snapshot."
-            copy="Twelve deterministic months show income versus spending and a reconstructed asset-minus-liability position."
+            eyebrow="05 | Monthly trends"
+            title="Compare recent direction with the current snapshot."
+            copy="Twelve fictional months show income, spending, assets, and liabilities."
           />
           <div className="trend-summary">
             <div><span>{trend.month}</span><strong>{dollars.format(currentNetWorth)}</strong><small>seeded net position</small></div>
@@ -481,7 +481,7 @@ export default function Dashboard({ initialBundle }: { initialBundle: DashboardB
 
         <section className="page-section methods-section" id="methods">
           <SectionHeading
-            eyebrow="06 · Provenance + confidence"
+            eyebrow="06 | Sources and confidence"
             title="Every number should explain where it came from."
             copy="The public demo separates seeded evidence, current-session assumptions, and calculated outputs."
           />
@@ -497,14 +497,14 @@ export default function Dashboard({ initialBundle }: { initialBundle: DashboardB
           <div className="method-notes">
             <article><span>Determinism</span><h3>Same seed, same ledger.</h3><p>The generator contains no clock reads, network calls, browser state, or private inputs. Tests assert repeatable output.</p></article>
             <article><span>Privacy boundary</span><h3>Aggregate demo data only.</h3><p>No merchant, payee, memo, account number, token, credential, statement, or transaction row exists in the data model.</p></article>
-            <article><span>Model limit</span><h3>Planning support, not advice.</h3><p>Tax, financing, and runway outputs are transparent examples for product engineering—not individualized recommendations.</p></article>
+            <article><span>Model limit</span><h3>Planning support, not advice.</h3><p>Tax, financing, and cash forecast results are product examples. They are not individualized recommendations.</p></article>
           </div>
         </section>
       </main>
 
       <footer className="site-footer">
         <div className="brand"><span>WM</span><strong>WEEKMARK<small>HOUSEHOLD LAB</small></strong></div>
-        <p>Clean-room public portfolio project · deterministic fictional data · no external connections</p>
+        <p>Public portfolio project | fictional data | no external connections</p>
         <a href="#top">Back to top</a>
       </footer>
     </>

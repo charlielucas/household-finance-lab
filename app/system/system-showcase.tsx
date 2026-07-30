@@ -34,7 +34,7 @@ export default function SystemShowcase() {
         <nav className={styles.nav} aria-label="System reference navigation">
           <Link className={styles.brand} href="/" aria-label="Weekmark Household Lab home"><span>WM</span> WEEKMARK</Link>
           <span className={styles.eyebrow}>Public system reference</span>
-          <Link className={styles.returnLink} href="/">Open the synthetic demo <span aria-hidden="true">↗</span></Link>
+          <Link className={styles.returnLink} href="/">Open the synthetic demo</Link>
         </nav>
       </header>
 
@@ -42,7 +42,7 @@ export default function SystemShowcase() {
         <section className={styles.hero} aria-labelledby="system-title">
           <div>
             <p className="eyebrow">System / v1.0</p>
-            <h1 id="system-title">Practical patterns for a calm, inspectable planning interface.</h1>
+            <h1 id="system-title">Interface patterns used in the Weekmark demo.</h1>
             <p>
               This living reference turns the Weekmark approach into shared tokens, resilient components,
               and explicit states. Every example below is fictional and intentionally non-personal.
@@ -50,7 +50,7 @@ export default function SystemShowcase() {
           </div>
           <aside className={styles.scope} aria-label="System scope">
             <StatusBadge tone="info">Synthetic examples only</StatusBadge>
-            <strong>One visual language, clear evidence boundaries.</strong>
+            <strong>Shared components and clear data labels.</strong>
             <p>Use the dashboard for the working product and this route to inspect the patterns behind it.</p>
           </aside>
         </section>
